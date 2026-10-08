@@ -21,7 +21,26 @@ main{max-width:1040px;margin:0 auto;padding:20px 16px 56px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
 .card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(16,24,40,.04);transition:transform .2s,box-shadow .2s}
 .card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(16,24,40,.1)}
-.img{aspect-ratio:16/9}
+ 
+/* ===== Efek gambar saat scroll (hanya gambar, teks tidak ikut) ===== */
+.img{position:relative;aspect-ratio:16/9;overflow:hidden;background:#eef0f4;
+  clip-path:inset(14% 10% 14% 10% round 18px);opacity:0;
+  transition:clip-path .9s cubic-bezier(.2,.8,.2,1),opacity .7s ease}
+.img.in{clip-path:inset(0 0 0 0 round 0);opacity:1}
+.img-inner{position:absolute;left:0;right:0;top:-16%;height:132%;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  will-change:transform,filter;transform:translate3d(0,0,0) scale(1.15)}
+.img::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);
+  transform:translate3d(var(--shine,-120%),0,0);will-change:transform}
+.img::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,transparent 55%,rgba(15,18,40,.22));opacity:var(--vig,.6)}
+@media (prefers-reduced-motion:reduce){
+  .img{clip-path:none;opacity:1;transition:none}
+  .img::after{display:none}
+  .img-inner{transform:none!important;filter:none!important}
+}
+ 
 .body{padding:16px 18px 20px}
 .body h3{margin:0 0 6px;font-size:1.08rem;font-weight:700;letter-spacing:-.01em}
 .body p{margin:0;color:var(--muted);font-size:.92rem}
@@ -55,12 +74,54 @@ const g=document.getElementById("grid");
 items.forEach(i=>{
   const a=document.createElement("a");a.className="card";a.href=i.link;
   const img=document.createElement("div");img.className="img";
-  img.style.background="url("+(i.image||dummy(i.g))+") center/cover no-repeat";
+  const inner=document.createElement("div");inner.className="img-inner";
+  inner.style.backgroundImage="url("+(i.image||dummy(i.g))+")";
+  img.appendChild(inner);
   const b=document.createElement("div");b.className="body";
   const h=document.createElement("h3");h.textContent=i.name;
   const p=document.createElement("p");p.textContent=i.desc;
   b.append(h,p);a.append(img,b);g.appendChild(a);
 });
+ 
+/* ===== Efek scroll pada gambar card =====
+   - Reveal: gambar "terbuka" (clip-path) saat pertama masuk layar
+   - Parallax: gambar bergeser lebih lambat dari card
+   - Zoom: gambar mengecil ke ukuran normal saat berada di tengah layar
+   - Fokus: warna lebih hidup di tengah layar, lebih redup di tepi
+   - Kilau: cahaya menyapu gambar mengikuti scroll */
+(function(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const imgs=[...document.querySelectorAll(".img")];
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}
+  }),{threshold:.15});
+  imgs.forEach(el=>io.observe(el));
+ 
+  let ticking=false;
+  function update(){
+    ticking=false;
+    const vh=innerHeight;
+    imgs.forEach(el=>{
+      const r=el.getBoundingClientRect();
+      if(r.bottom<-50||r.top>vh+50)return;
+      const half=vh/2+r.height/2;
+      let t=((r.top+r.height/2)-vh/2)/half;   // -1 (atas) .. 0 (tengah) .. 1 (bawah)
+      t=Math.max(-1,Math.min(1,t));
+      const a=Math.abs(t),f=1-a;               // f = 1 saat di tengah
+      const inner=el.firstChild;
+      inner.style.transform="translate3d(0,"+(t*r.height*-0.14).toFixed(1)+"px,0) scale("+(1+0.14*a).toFixed(3)+")";
+      inner.style.filter="saturate("+(0.65+0.5*f).toFixed(2)+") brightness("+(0.9+0.12*f).toFixed(2)+")";
+      el.style.setProperty("--shine",(t*130).toFixed(1)+"%");
+      el.style.setProperty("--vig",(0.25+0.6*a).toFixed(2));
+    });
+  }
+  function req(){if(!ticking){ticking=true;requestAnimationFrame(update);}}
+  addEventListener("scroll",req,{passive:true});
+  addEventListener("resize",req);
+  addEventListener("load",update);
+  update();
+})();
 </script>
 </body>
 </html>
+ 
