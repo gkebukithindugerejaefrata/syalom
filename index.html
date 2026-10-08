@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GKE Bukit Hindu - Gereja Efrata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#ffffff;--text:#16181d;--muted:#6b7280;--line:#eceef2;--accent:#4f46e5}
+html{scroll-padding-top:env(safe-area-inset-top,0px);color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hero{text-align:center;padding:64px 20px 36px;max-width:720px;margin:0 auto}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:#eef0ff;padding:6px 14px;border-radius:999px}
+.hero h1{margin:16px 0 10px;font-size:clamp(2rem,7vw,3.2rem);line-height:1.1;font-weight:800;letter-spacing:-.02em}
+.hero p{margin:0 auto;max-width:480px;color:var(--muted);font-size:1.02rem}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 56px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(16,24,40,.04);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(16,24,40,.1)}
+.img{aspect-ratio:16/9}
+.body{padding:16px 18px 20px}
+.body h3{margin:0 0 6px;font-size:1.08rem;font-weight:700;letter-spacing:-.01em}
+.body p{margin:0;color:var(--muted);font-size:.92rem}
+footer{text-align:center;padding:24px 16px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <span class="badge">Selamat Datang</span>
+  <h1>GKE Bukit Hindu</h1>
+  <p>Gereja Efrata &mdash; bersekutu, bertumbuh, dan melayani dalam kasih Kristus.</p>
+</header>
+<main><div class="grid" id="grid"></div></main>
+<footer>© GKE Bukit Hindu · Gereja Efrata</footer>
+<script>
+// Isi image dengan data URI foto bila tersedia; link dengan alamat halaman tujuan.
+const items=[
+ {name:"Liturgi Ibadah",desc:"Susunan liturgi ibadah Minggu yang dapat dibuka langsung dari ponsel.",link:"https://gkebukithindugerejaefrata.github.io/liturgi/",image:"./image/liturgi.jpg",g:["#6366f1","#a78bfa"]},
+ {name:"Ulang Tahun Jemaat",desc:"Data ulang tahun kelahiran dan pernikahan jemaat.",link:"https://gkebukithindugerejaefrata.github.io/datajemaat/ultah.html",image:"./image/ultah.jpg",g:["#f472b6","#fb923c"]},
+ {name:"Ayat Harian",desc:"Firman Tuhan harian untuk menjadi bahan renungan.",link:"#",image:"./image/ayatharian.jpg",g:["#06b6d4","#3b82f6"]},
+ {name:"Jadwal Ibadah",desc:"Jadwal seluruh ibadah dan kegiatan rutin gereja.",link:"https://gkebukithindugerejaefrata.github.io/ibadah/",image:"./image/jadwal.jpg",g:["#10b981","#84cc16"]},
+ {name:"Warta Jemaat",desc:"Pengumuman dan kabar terbaru seputar pelayanan gereja.",link:"#",image:"./image/warta.jpg",g:["#f59e0b","#ef4444"]},
+ {name:"Data Jemaat",desc:"Khusus Pengurus Lingkungan",link:"#",image:"./image/cari.jpg",g:["#8b5cf6","#ec4899"]}
+];
+// Gambar dummy (SVG) - otomatis diganti bila "image" pada item diisi.
+function dummy(c){
+  const s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><defs><linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c[0]+'"/><stop offset="1" stop-color="'+c[1]+'"/></linearGradient></defs><rect width="640" height="360" fill="url(#a)"/><circle cx="470" cy="110" r="38" fill="#fff" opacity=".55"/><path d="M0 360V250l130-90 120 85 110-70 280 125v60z" fill="#fff" opacity=".35"/><path d="M0 360V300l160-70 150 60 130-45 200 80v35z" fill="#fff" opacity=".55"/></svg>';
+  return "data:image/svg+xml;utf8,"+encodeURIComponent(s);
+}
+const g=document.getElementById("grid");
+items.forEach(i=>{
+  const a=document.createElement("a");a.className="card";a.href=i.link;
+  const img=document.createElement("div");img.className="img";
+  img.style.background="url("+(i.image||dummy(i.g))+") center/cover no-repeat";
+  const b=document.createElement("div");b.className="body";
+  const h=document.createElement("h3");h.textContent=i.name;
+  const p=document.createElement("p");p.textContent=i.desc;
+  b.append(h,p);a.append(img,b);g.appendChild(a);
+});
+</script>
+</body>
+</html>
