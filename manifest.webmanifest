@@ -4,8 +4,8 @@
   "description": "GKE Bukit Hindu Gereja Efrata \u2014 bersekutu, bertumbuh, dan melayani dalam kasih Kristus.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#cc0000",
-  "theme_color": "#cc0000",
+  "background_color": "#154a00",
+  "theme_color": "#154a00",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -37,6 +37,12 @@
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "icons/icon-180-maskable.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GKE BUKIT HINDU - GEREJA EFRATA</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#154a00">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GKE Bukit Hindu">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fdfbf7;
+      --bg-soft:#f3efe6;
+      --card:#ffffff;
+      --text:#1a140c;
+      --muted:#7a7066;
+      --line:#ece7df;
+      --line-strong:#d8d0c2;
+      --accent:#154a00;
+      --accent-light:#1e6b00;
+      --shadow:0 8px 24px rgba(21,74,0,.08);
+      --shadow-hover:0 20px 40px rgba(21,74,0,.15);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    
+    /* HOLDER SIANG MALAM */
+    .top-holder{
+      position:relative;
+      width:100%;
+      height:68vh;
+      min-height:420px;
+      max-height:720px;
+      overflow:hidden;
+      background:#0f2e00;
+    }
+    .top-holder img{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:cover;
+      transition:opacity 1.2s ease, transform 8s ease;
+    }
+    .top-holder .img-night{opacity:0}
+    .top-holder.is-night .img-day{opacity:0;transform:scale(1.05)}
+    .top-holder.is-night .img-night{opacity:1;transform:scale(1.02)}
+    .top-holder.is-day .img-day{opacity:1}
+    .top-holder.is-day .img-night{opacity:0}
+    .top-holder::after{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.1) 0%, rgba(0,0,0,.15) 40%, rgba(21,74,0,.75) 100%);
+      z-index:1;
+    }
+    .top-content{
+      position:absolute;z-index:2;
+      bottom:0;left:0;right:0;
+      padding:36px 24px 32px;
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.15);
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      padding:6px 14px;
+      border-radius:100px;
+      font-size:.75rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-weight:500;
+    }
+    .badge::before{
+      content:"";width:6px;height:6px;border-radius:50%;
+      background:#4ade80;
+      box-shadow:0 0 8px #4ade80;
+      display:inline-block;
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .top-content h1{
+      margin:14px 0 10px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(2.4rem,6vw,3.8rem);
+      line-height:.95;
+      color:#fff;
+      letter-spacing:-.03em;
+      text-shadow:0 2px 20px rgba(0,0,0,.3);
+    }
+    .top-content h1 em{
+      font-style:italic;
+      color:#c8f0b5;
+      font-weight:600;
+    }
+    .top-content p{
+      margin:0;
+      color:rgba(255,255,255,.85);
+      font-size:clamp(.95rem,2.2vw,1.1rem);
+      max-width:520px;
+      line-height:1.6;
+    }
+    .time-label{
+      margin-top:14px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:rgba(255,255,255,.7);
+      font-size:.8rem;
+    }
+
+    /* HERO TEXT DIBAWAH HOLDER */
+    .hero{
+      text-align:center;
+      padding:48px 24px 20px;
+      max-width:720px;
+      margin:0 auto;
+    }
+    .hero h2{
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.8rem;
+      margin:0 0 8px;
+      color:var(--text);
+    }
+    .hero p{color:var(--muted);font-size:.95rem;margin:0}
+
+    /* GRID */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      gap:24px;
+      max-width:1200px;
+      margin:0 auto;
+      padding:24px 20px 56px;
+    }
+    .card{
+      display:flex;
+      flex-direction:column;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      text-decoration:none;
+      color:inherit;
+      box-shadow:var(--shadow);
+      transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .3s;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--shadow-hover);
+      border-color:var(--line-strong);
+    }
+    .card .img{
+      aspect-ratio:16/10;
+      overflow:hidden;
+      background:var(--bg-soft);
+      position:relative;
+    }
+    .card .img img{
+      width:100%;height:100%;
+      object-fit:cover;
+      display:block;
+      transition:transform .6s cubic-bezier(.2,.8,.2,1);
+    }
+    .card:hover .img img{transform:scale(1.06)}
+    /* BODY TANPA PANAH, JARAK RAPAT */
+    .card .body{
+      padding:14px 18px 18px; /* rapat dari image */
+    }
+    .card .body h3{
+      margin:0 0 6px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:1.35rem;
+      font-weight:600;
+      line-height:1.2;
+      color:var(--text);
+    }
+    .card .body p{
+      margin:0;
+      color:var(--muted);
+      font-size:.85rem;
+      line-height:1.5;
+    }
+
+    footer{
+      text-align:center;
+      padding:32px 24px 44px;
+      color:var(--muted);
+      font-size:.8rem;
+      border-top:1px solid var(--line);
+      background:linear-gradient(180deg, var(--bg), var(--bg-soft));
+    }
+    footer span{color:var(--accent);font-weight:600}
+    
+    @media(max-width:600px){
+      .top-holder{height:58vh;min-height:380px}
+      .grid{grid-template-columns:1fr;gap:16px;padding:20px 16px 40px}
+      .card .img{aspect-ratio:16/9}
+    }
+  </style>
+</head>
+<body>
+  <!-- IMAGE HOLDER SIANG MALAM -->
+  <div class="top-holder is-day" id="topHolder">
+    <img class="img-day" id="imgDay" src="holder-day.webp" alt="Gereja Siang" onerror="this.src='https://images.unsplash.com/photo-1507692049790-de58227181d0?w=1200'">
+    <img class="img-night" id="imgNight" src="holder-night.webp" alt="Gereja Malam" onerror="this.src='https://images.unsplash.com/photo-1511910849309-0dffb8785146?w=1200'">
+    <div class="top-content">
+      <span class="badge" id="badgeTime">Live • GKE Bukit Hindu</span>
+      <h1>GKE Bukit <em>Hindu</em></h1>
+      <p>Gereja Efrata — bersekutu, bertumbuh, dan melayani dalam kasih Kristus.</p>
+      <div class="time-label" id="timeLabel">☀️ Selamat Siang</div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h2>Pelayanan & Informasi</h2>
+    <p>Akses cepat untuk jemaat</p>
+  </div>
+
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <footer>© <span>GKE Bukit Hindu</span> · Gereja Efrata — Kasih, Setia, Melayani</footer>
+
+  <script>
+    const data = [
+      {name:"Jadwal Natal",desc:"Jadwal Ibadah dan Perayaan Natal di Gedung Gereja Efrata",link:"https://gkebukithindugerejaefrata.github.io/syalom/natal.html",image:"./image/natal.png"},
+      {name:"Liturgi Ibadah",desc:"Susunan liturgi ibadah Minggu yang dapat dibuka langsung dari ponsel.",link:"https://gkebukithindugerejaefrata.github.io/liturgi/",image:"./image/liturgi.jpg"},
+      {name:"Ulang Tahun Jemaat",desc:"Data ulang tahun kelahiran dan pernikahan jemaat.",link:"https://gkebukithindugerejaefrata.github.io/datajemaat/ultah.html",image:"./image/ultah.jpg"},
+      {name:"Jadwal Ibadah",desc:"Jadwal seluruh ibadah dan kegiatan rutin gereja.",link:"https://gkebukithindugerejaefrata.github.io/ibadah/",image:"./image/jadwal.jpg"},
+      {name:"Tautan Lain",desc:"Tautan lain mengenai informasi pelayanan via Linktr.ee.",link:"https://linktr.ee/gkebukithindu",image:"./image/link.png"},
+      {name:"Data Jemaat",desc:"Khusus Pengurus Lingkungan",link:"https://gkebukithindugerejaefrata.github.io/datajemaat/cari.html",image:"./image/cari.jpg"}
+    ];
+
+    // Render cards WITHOUT arrow, tight spacing
+    const grid = document.getElementById('grid');
+    grid.innerHTML = data.map(item => `
+      <a class="card" href="${item.link}" target="_blank" rel="noopener">
+        <div class="img"><img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400/154a00/ffffff?text=${encodeURIComponent(item.name)}'"></div>
+        <div class="body">
+          <h3>${item.name}</h3>
+          <p>${item.desc}</p>
+        </div>
+      </a>
+    `).join('');
+
+    // SIANG MALAM LOGIC
+    function updateDayNight(){
+      const hour = new Date().getHours();
+      const holder = document.getElementById('topHolder');
+      const label = document.getElementById('timeLabel');
+      const badge = document.getElementById('badgeTime');
+      
+      let isDay = hour >= 6 && hour < 18;
+      let greeting, icon;
+      
+      if(hour >= 5 && hour < 11){ greeting = "Selamat Pagi"; icon="🌅"; }
+      else if(hour >= 11 && hour < 15){ greeting = "Selamat Siang"; icon="☀️"; }
+      else if(hour >= 15 && hour < 18){ greeting = "Selamat Sore"; icon="🌇"; }
+      else if(hour >= 18 && hour < 22){ greeting = "Selamat Malam"; icon="🌙"; }
+      else { greeting = "Selamat Malam"; icon="✨"; }
+
+      if(isDay){
+        holder.classList.remove('is-night');
+        holder.classList.add('is-day');
+        label.textContent = icon + " " + greeting + " — Mode Siang";
+        badge.textContent = "Siang • GKE Bukit Hindu";
+      }else{
+        holder.classList.remove('is-day');
+        holder.classList.add('is-night');
+        label.textContent = icon + " " + greeting + " — Mode Malam";
+        badge.textContent = "Malam • GKE Bukit Hindu";
+      }
+    }
+    updateDayNight();
+    // Update tiap menit jika user buka lama
+    setInterval(updateDayNight, 60000);
+
+    // PWA
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('./sw.js'));
+    }
+  </script>
+</body>
+</html>
